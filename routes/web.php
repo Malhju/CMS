@@ -88,3 +88,37 @@ Route::get('/create', function (){
     ];
     Post::create($values);
 });
+
+Route::get('/update2', function (){
+    Post::where('id', 9)->where('is_admin', 0)->update(
+        [
+            'title' => "Updated via update method",
+            'content' => "It's a new content"
+        ]
+    );
+});
+
+Route::get('/delete', function(){
+    $Post = Post::find(2);
+    $Post->delete();
+});
+
+Route::get('/delete2', function(){
+    Post::destroy([10, 8, 7]); // On supprime les posts avec les id(s) 7, 8 et 10.
+});
+
+Route::get('/softdelete', function(){
+    Post::find(14)->delete();
+});
+
+Route::get('/forcedelete', function() {
+    Post::onlyTrashed()->where('id', 6)->forceDelete();
+});
+
+Route::get('/restore', function() {
+    Post::withTrashed()->where('id', 14)->restore();
+});
+
+Route::get('/readsoftdelete', function() {
+    return Post::onlyTrashed()->get();
+});
